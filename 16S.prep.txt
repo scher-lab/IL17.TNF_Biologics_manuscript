@@ -1,10 +1,8 @@
 ############################################ 
 ## R script                               ##
 ## Project: IL17.TNF_Biologics_manuscript ##
-## 16S data                               ##
-## Prep for analysis (MAN)                ##
+## 16S prep                               ##
 ## Author: JM                             ##
-## Date: 9/28/18                          ##
 ############################################
 
 ### Brief description:
