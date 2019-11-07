@@ -6,9 +6,9 @@
 ############################################
 
 ### Brief description:
-### This script prepares all of the necessary objects that are used to create manuscript figures from 16S data
-### It does so by importing a biom file (generated via QIIME v.1.9.1), a mapping file and a tree file (from
-### greengenes gg_13_8).
+### This script prepares all of the necessary objects that are used to create manuscript figures from 16S data.
+### It does so by importing a biom file that contains the sequence data from all of the samples (generated via QIIME v.1.9.1), 
+### a mapping file and a tree file (from greengenes gg_13_8).
 
 ############################################################################
 ############################################################################
