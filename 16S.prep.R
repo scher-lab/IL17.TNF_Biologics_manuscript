@@ -35,7 +35,7 @@ library(RColorBrewer)
 b = ".../IL17.TNF/16S/outputs/6_biom_R/otu_table.json"
 biom = import_biom(b, taxaPrefix = F)
 
-# Import mapping file
+# import mapping file
 # Note: must leave A1 cell of mapping file empty for R compatibility
 m = ".../IL17.TNF/16S/inputs/map/Map_IL17.TNF_16S_all_v2_R.txt"
 map = sample_data(read.table(m, header = TRUE, sep = "\t", row.names = 1))
