@@ -2,7 +2,7 @@
 ## R script                               ##
 ## Project: IL17.TNF_Biologics_manuscript ##
 ## Figure 04, Supplementary Figure 05     ##
-## ITS data
+## ITS data                               ##
 ## Author: JM                             ##
 ############################################
 
