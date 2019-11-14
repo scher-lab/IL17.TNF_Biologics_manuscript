@@ -382,7 +382,6 @@ for (i in seq_along(pseqs)) {
     filename_matrix = paste(pseq.names[i], "bdiv_var.pre.post.tx", dists[j], "matrix.csv", sep = "_")  
     filename_dist = paste(pseq.names[i], "bdiv_var.pre.post.tx", dists[j], "dist.table.csv", sep = "_") 
     filename_plot = paste(pseq.names[i], "bdiv_var.pre.post.tx", dists[j], "plot.pdf", sep = "_")  
-    filename_qplot = paste(pseq.names[i], "bdiv_var.pre.post.tx", dists[j], "qqplot.pdf", sep = "_")  
     filename_plot.stats = paste(pseq.names[i], "bdiv_var.pre.post.tx", dists[j], "plot.stats.csv", sep = "_")
     filename_stats_TNF.IL17.load = paste(pseq.names[i], "bdiv_var.pre.post.tx", dists[j], "stats_TNF.IL17.load.txt", sep = "_")
     filename_stats_TNF.IL17.maint = paste(pseq.names[i], "bdiv_var.pre.post.tx", dists[j], "stats_TNF.IL17.maint.txt", sep = "_")
@@ -547,19 +546,6 @@ for (i in seq_along(pseqs)) {
     
     # calculate general statistics
     
-    # qplot
-    qp <- qplot(sample = Distance, data = comb.data.s, size=I(0.8)) +
-      ggtitle(paste("QQ plot:\n", dists[j], "\n", pseq.names[i], sep = "")) +      
-      bkg_qqplot
-    
-    fqp = paste(dir.new, filename_qplot, sep = "")
-    pdf(file = fqp) 
-    plot(qp)
-    dev.off() 
-    
-    # Shapiro-Wilks test for normality
-    sh <- shapiro.test(comb.data.s$Distance)
-    
     # keep TNF but subset IL17 into loading and maintenance subcategories
     # comparison is done between TNF and IL17
     d.IL17.load <- comb.data.s[comb.data.s$Category != "3_IL17_maint", ]
@@ -567,17 +553,8 @@ for (i in seq_along(pseqs)) {
     
     # TNF-IL17 loading #
     
-    # T-test
-    tt.IL17.load <- t.test(Distance ~ Category, data = d.IL17.load)
-    
     # Mann-Whitney
     mw.IL17.load <- wilcox.test(Distance ~ Category, data = d.IL17.load, paired = FALSE)
-    
-    # F-test
-    ft.IL17.load <- var.test(Distance ~ Category, data = d.IL17.load)
-    
-    # Fligner-Killeen test
-    fling.IL17.load <- fligner.test(Distance ~ Category, data = d.IL17.load)
     
     # save calculations
     fs.IL17.load = paste(dir.new, filename_stats_TNF.IL17.load, sep = "")
@@ -587,34 +564,13 @@ for (i in seq_along(pseqs)) {
     cat("\n\n", file = fs.IL17.load, append = TRUE)
     cat(pseq.names[i], file = fs.IL17.load, append = TRUE)
     cat("\n\n==========================================\n\n", file = fs.IL17.load, append = TRUE)
-    cat("Shapiro-Wilks test for normality\n", file = fs.IL17.load, append = TRUE)
-    capture.output(sh, file = fs.IL17.load, append = TRUE)
-    cat("\n==========================================\n\n", file = fs.IL17.load, append = TRUE)
-    cat("T-test (parametric)\n", file = fs.IL17.load, append = TRUE)
-    capture.output(tt.IL17.load, file = fs.IL17.load, append = TRUE)
-    cat("\n==========================================\n\n", file = fs.IL17.load, append = TRUE)
     cat("Mann-Whitney test (non-parametric)\n", file = fs.IL17.load, append = TRUE)
     capture.output(mw.IL17.load, file = fs.IL17.load, append = TRUE)
-    cat("\n==========================================\n\n", file = fs.IL17.load, append = TRUE)
-    cat("F-test of variance (parametric)\n", file = fs.IL17.load, append = TRUE)
-    capture.output(ft.IL17.load, file = fs.IL17.load, append = TRUE)
-    cat("\n==========================================\n\n", file = fs.IL17.load, append = TRUE)
-    cat("Fligner-Killeen test of variance (non-parametric)\n", file = fs.IL17.load, append = TRUE)
-    capture.output(fling.IL17.load, file = fs.IL17.load, append = TRUE)
     
     # TNF-IL17 maintenance #
     
-    # T-test
-    tt.IL17.maint <- t.test(Distance ~ Category, data = d.IL17.maint)
-    
     # Mann-Whitney
     mw.IL17.maint <- wilcox.test(Distance ~ Category, data = d.IL17.maint, paired = FALSE)
-    
-    # F-test
-    ft.IL17.maint <- var.test(Distance ~ Category, data = d.IL17.maint)
-    
-    # Fligner-Killeen test
-    fling.IL17.maint <- fligner.test(Distance ~ Category, data = d.IL17.maint)
     
     # save calculations
     fs.IL17.maint = paste(dir.new, filename_stats_TNF.IL17.maint, sep = "")
@@ -624,20 +580,8 @@ for (i in seq_along(pseqs)) {
     cat("\n\n", file = fs.IL17.maint, append = TRUE)
     cat(pseq.names[i], file = fs.IL17.maint, append = TRUE)
     cat("\n\n==========================================\n\n", file = fs.IL17.maint, append = TRUE)
-    cat("Shapiro-Wilks test for normality\n", file = fs.IL17.maint, append = TRUE)
-    capture.output(sh, file = fs.IL17.maint, append = TRUE)
-    cat("\n==========================================\n\n", file = fs.IL17.maint, append = TRUE)
-    cat("T-test (parametric)\n", file = fs.IL17.maint, append = TRUE)
-    capture.output(tt.IL17.maint, file = fs.IL17.maint, append = TRUE)
-    cat("\n==========================================\n\n", file = fs.IL17.maint, append = TRUE)
     cat("Mann-Whitney test (non-parametric)\n", file = fs.IL17.maint, append = TRUE)
     capture.output(mw.IL17.maint, file = fs.IL17.maint, append = TRUE)
-    cat("\n==========================================\n\n", file = fs.IL17.maint, append = TRUE)
-    cat("F-test of variance (parametric)\n", file = fs.IL17.maint, append = TRUE)
-    capture.output(ft.IL17.maint, file = fs.IL17.maint, append = TRUE)
-    cat("\n==========================================\n\n", file = fs.IL17.maint, append = TRUE)
-    cat("Fligner-Killeen test of variance (non-parametric)\n", file = fs.IL17.maint, append = TRUE)
-    capture.output(fling.IL17.maint, file = fs.IL17.maint, append = TRUE)
   }
 } 
 
