@@ -91,7 +91,7 @@ bkg <- theme_few() +
   theme(panel.border = element_rect(color = "black", fill = NA, size = 1))
 
 # directory for storing files
-dir = ".../IL17.TNF/16S/jobs/1_alpha.div_boxplots_R_MAN/"
+dir = ".../IL17.TNF/16S/jobs/1_alpha.div_boxplots_R/"
 
 # list of phyloseq objects to process
 pseqs <- list(physeq = phy_16S_human_TNF.B.C_IL17.B.C.D_even1000)
@@ -255,7 +255,7 @@ f.dec <- function(x){
 }
 
 # directory for storing files
-dir = ".../IL17.TNF/16S/jobs/2_beta.div_pcoa_R_MAN/"
+dir = ".../IL17.TNF/16S/jobs/2_beta.div_pcoa_R/"
 
 # list of phyloseq objects
 pseqs <- list(physeq = phy_16S_human_TNF.B.C_IL17.B.C.D_even1000)
@@ -351,7 +351,7 @@ bkg_qqplot <- theme_bw() +
   theme(plot.title = element_text(size = 12, color = "black", face = "bold"))
 
 # directory for storing files
-dir = ".../IL17.TNF/16S/jobs/2_beta.div_pre.post.tx_R_MAN/"
+dir = ".../IL17.TNF/16S/jobs/2_beta.div_pre.post.tx_R/"
 
 # list of phyloseq objects
 pseqs <- list(physeq = phy_16S_human_TNF.B.C_IL17.B.C.D,
@@ -674,7 +674,7 @@ bkg <- theme_classic() +
   theme(panel.border = element_rect(color = "black", fill = NA, size = 1))
 
 # directory for storing files
-dir = ".../IL17.TNF/16S/jobs/3_taxa.summary_R_MAN/"
+dir = ".../IL17.TNF/16S/jobs/3_taxa.summary_R/"
 
 # list of phyloseq objects to process
 pseqs <- list(physeq = phy_16S_human_TNF.B.C_IL17.B.C.D)
