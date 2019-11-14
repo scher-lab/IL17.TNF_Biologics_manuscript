@@ -340,15 +340,6 @@ bkg <- theme_classic() +
   theme(axis.title.y = element_text(margin = unit(c(0, 8, 0, 0), "mm"))) +
   theme(legend.position = "none")
 
-bkg_qqplot <- theme_bw() +
-  theme(axis.text = element_text(size = 10, color = "black")) +
-  theme(axis.title = element_text(size = 11, color = "black", face = "bold")) +
-  theme(axis.title.x = element_text(margin = unit(c(5, 0, 0, 0), "mm"))) +
-  theme(axis.title.y = element_text(margin = unit(c(0, 5, 0, 0), "mm"))) +
-  theme(legend.text = element_text(size = 8)) +
-  theme(legend.title = element_text(size = 10)) +
-  theme(plot.title = element_text(size = 12, color = "black", face = "bold"))
-
 # directory for storing files
 dir = ".../IL17.TNF/16S/jobs/5_specific.taxa_delta.rel.abund_R/"
 
