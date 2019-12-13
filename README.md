@@ -9,8 +9,8 @@ Supplementary figure 13<br/>
 Note that code was adjusted to reflect only the data in the figures/tables.<br/>
 
 The following files are included:<br/>
-<b>01_16S.prep.R:</b> prep for 16S data<br/>
-<b>02_ITS.prep.R:</b> prep for ITS data<br/>
+<b>01_16S.prep.R:</b> preparation for 16S data analysis<br/>
+<b>02_ITS.prep.R:</b> preparation for ITS data analysis<br/>
 <b>03_Figure.01_Supplementary.figure.02.R:</b> Figure 01, Supplementary figure 02<br/>
 <b>04_Figure.02_Supplementary.figure.03.R:</b> Figure 02, Supplementary figure 03<br/>
 <b>06_Figure.04_Supplementary.figure.05.R:</b> Figure 04, Supplementary figure 05<br/>
