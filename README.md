@@ -1,5 +1,5 @@
 # IL17-TNF Biologics manuscript<br/>
-Code affiliated with the manuscript, "IL-17 Inhibition in Spondyloarthritis Associates with Subclinical Gut Microbiome Perturbations and a Distinctive IL-25-Driven Intestinal Inflammation"<br/><br/>
+Code affiliated with the manuscript, <b>"IL-17 Inhibition in Spondyloarthritis Associates with Subclinical Gut Microbiome Perturbations and a Distinctive IL-25-Driven Intestinal Inflammation"</b><br/>
 
 For feasibility code is split across Figures, Supplementary Figures and Tables.<br/>
 The following figures/tables are not included because they did not require computational analysis:<br/>
