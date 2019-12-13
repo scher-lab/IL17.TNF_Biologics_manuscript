@@ -630,7 +630,7 @@ pseqs <- list(physeq = phy_ITS.R1_human_TNF.B.C_IL17.B.C.D)
 pseq.names <- c("ITS.R1_human_TNF.B.C_IL17.B.C.D")
 
 # taxanomic rank
-tax.rank <- "Order"
+tax.rank <- c("Order")
 
 ##############
 
