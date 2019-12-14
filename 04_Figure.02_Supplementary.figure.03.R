@@ -2,7 +2,7 @@
 ## R script                                                    ##
 ## Project: IL17.TNF Biologics manuscript                      ##
 ## Figure 02, Supplementary figure 03, Supplementary table 04	 ##
-## 16S data				                                             ##
+## 16S data                                                    ##
 ## Author: JM                                                  ##
 #################################################################
 
