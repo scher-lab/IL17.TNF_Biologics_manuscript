@@ -683,3 +683,164 @@ for (i in seq_along(pseqs)) {
   write.csv(p.val, file = ".../IL17.TNF/16S/jobs/5_specific.taxa_rel.abund.wilcox_R/p.value.table.csv")
 }
 
+############################################################################
+############################################################################
+############################################################################
+
+### P-value table of taxa absolute delta relative abundance between TNFi and IL-17i ###
+
+# list of phyloseq objects to process
+pseqs <- list(physeq = phy_16S_human_TNF.B.C_IL17.B.C.D)
+
+# list of specific taxa
+taxa.names <- c("p__Firmicutes", "p__Bacteroidetes", "p__Proteobacteria", 
+                "p__Verrucomicrobia",
+                "c__Actinobacteria", "c__Clostridia", "c__Bacteroidia",
+                "c__Epsilonproteobacteria", "c__Verrucomicrobiae",
+                "o__Clostridiales", "o__Bacteroidales", "o__Turicibacterales",
+                "o__Campylobacterales",
+                "f__Erysipelotrichaceae", "f__Porphyromonadaceae", "f__Bacteroidaceae",
+                "f__Lachnospiraceae", "f__Ruminococcaceae", "f__Prevotellaceae",
+                "f__Turicibacteraceae", "f__Clostridiaceae", "f__Veillonellaceae",
+                "f__Enterococcaceae", "f__Bacillaceae", "f__Christensenellaceae", 
+                "f__Eubacteriaceae", "f__Peptococcaceae", "f__Peptostreptococcaceae",
+                "g__Akkermansia", "g__Coprobacillus", "g__Parabacteroides", 
+                "g__Pseudobutyrivibrio", "g__Ruminococcus", "g__Prevotella",
+                "g__Bacteroides", "g__Turicibacter", "g__Proteus",
+                "g__Lachnospira", "g__Enterococcus", "g__Oribacterium",
+                "g__Bifidobacterium", "g__Paraprevotella", "g__Blautia",
+                "g__Coprococcus", "g__Faecalibacterium", "g__Dialister", 
+                "g__Veillonella", "g__Erwinia", "g__Haemophilus",
+                "g__[Eubacterium]", "g__Catenibacterium", "g__Clostridium") 
+
+# for each phyloseq object in pseqs, calculate the relative abudnance
+# over time for specific taxa
+for (i in seq_along(pseqs)) {
+  
+  # merge phyloseq objects to each taxnomic level
+  phylum <- tax_glom(pseqs[[i]], taxrank = "Phylum", NArm = FALSE)
+  class <- tax_glom(pseqs[[i]], taxrank = "Class", NArm = FALSE)
+  order <- tax_glom(pseqs[[i]], taxrank = "Order", NArm = FALSE)
+  family <- tax_glom(pseqs[[i]], taxrank = "Family", NArm = FALSE)
+  genus <- tax_glom(pseqs[[i]], taxrank = "Genus", NArm = FALSE)
+  
+  # transform to relative abundance
+  tp <- transform_sample_counts(phylum, rel_abundance)
+  tc <- transform_sample_counts(class, rel_abundance)
+  to <- transform_sample_counts(order, rel_abundance)
+  tf <- transform_sample_counts(family, rel_abundance)
+  tg <- transform_sample_counts(genus, rel_abundance)
+  
+  # create table for storing data
+  p.val <- matrix(data = NA, nrow = 52, ncol = 3)
+  colnames(p.val) <- c("Taxa", "p.value.load", "p.value.maint")
+  
+  for (j in seq_along(taxa.names)) {
+    
+    # extract relative abundance of specific taxa
+    if (grepl("p__", taxa.names[j])) {
+      taxa.rel.abund <- subset_taxa(tp, Phylum == taxa.names[j])
+    } else if (grepl("c__", taxa.names[j])) {
+      taxa.rel.abund <- subset_taxa(tc, Class == taxa.names[j])
+    } else if (grepl("o__", taxa.names[j])) {
+      taxa.rel.abund <- subset_taxa(to, Order == taxa.names[j])
+    } else if (grepl("f__", taxa.names[j])) {
+      taxa.rel.abund <- subset_taxa(tf, Family == taxa.names[j])
+    } else if (grepl("g__", taxa.names[j])) {
+      taxa.rel.abund <- subset_taxa(tg, Genus == taxa.names[j])
+    }
+    
+    # create dataset
+    d <- as.data.frame(merge(sample_data(taxa.rel.abund), t(otu_table(taxa.rel.abund)), 
+                             by = "row.names", all = TRUE))  
+    
+    # rename column with relative abundance values for easier plotting 
+    # specify the column number for Clostridium as it has multiple OTU IDs; others have only one OTU ID
+    if (taxa.names[j] == "g__Clostridium") {
+      colnames(d)[43] <- "Taxa_rel_abundance" 
+    } else {
+      colnames(d)[ncol(d)] <- "Taxa_rel_abundance" 
+    }
+    
+    ## TNF ##
+    
+    # subset dataset
+    # spread data across timepoints
+    # calculate absolute delta relative abundance
+    d.TNF <- d %>%
+      subset(select = c("Subject", "Treatment", "Timepoint_revised", "Taxa_rel_abundance")) %>%
+      filter(Treatment == "1_TNF") %>% 
+      filter(Timepoint_revised != "D") %>% 
+      spread(key = "Timepoint_revised", value = "Taxa_rel_abundance") %>%
+      mutate(Delta_rel_abundance = abs(C-B))
+    
+    # rename columns
+    colnames(d.TNF)[colnames(d.TNF)=="B"] <- "1_pre"  
+    colnames(d.TNF)[colnames(d.TNF)=="C"] <- "2_post"  
+    
+    ##########
+    
+    ## IL17 loading ##
+    
+    # subset dataset
+    # spread data across timepoints
+    # calculate absolute delta relative abundance
+    d.IL17.load <- d %>%
+      subset(select = c("Subject", "Treatment", "Timepoint_revised", "Taxa_rel_abundance")) %>%
+      filter(Treatment == "2_IL17") %>% 
+      filter(Timepoint_revised != "D") %>%
+      spread(key = "Timepoint_revised", value = "Taxa_rel_abundance") %>%
+      mutate(Delta_rel_abundance = abs(C-B))
+    
+    # rename treatment
+    d.IL17.load$Treatment <- replace(as.character(d.IL17.load$Treatment), as.character(d.IL17.load$Treatment) == "2_IL17", "2_IL17.load")
+    
+    # rename columns
+    colnames(d.IL17.load)[colnames(d.IL17.load)=="B"] <- "1_pre"  
+    colnames(d.IL17.load)[colnames(d.IL17.load)=="C"] <- "2_post"
+    
+    ##########
+    
+    ## IL17 maintenance ##
+    
+    # subset dataset
+    # spread data across timepoints
+    # calculate absolute delta relative abundance
+    d.IL17.maint <- d %>%
+      subset(select = c("Subject", "Treatment", "Timepoint_revised", "Taxa_rel_abundance")) %>%
+      filter(Treatment == "2_IL17") %>% 
+      filter(Timepoint_revised != "C") %>%
+      spread(key = "Timepoint_revised", value = "Taxa_rel_abundance") %>%
+      filter(!is.na(`D`)) %>%
+      mutate(Delta_rel_abundance = abs(D-B))
+    
+    # rename treatment
+    d.IL17.maint$Treatment <- replace(as.character(d.IL17.maint$Treatment), as.character(d.IL17.maint$Treatment) == "2_IL17", "3_IL17.maint")
+    
+    # rename columns
+    colnames(d.IL17.maint)[colnames(d.IL17.maint)=="B"] <- "1_pre"  
+    colnames(d.IL17.maint)[colnames(d.IL17.maint)=="D"] <- "2_post"
+    
+    ##########
+    
+    # join subsets
+    d.final <- rbind(d.TNF, d.IL17.load, d.IL17.maint)
+    
+    # split IL17 into loading and maintenance subcategories
+    d.load <- d.final[d.final$Treatment != "3_IL17.maint", ]
+    d.maint <- d.final[d.final$Treatment != "2_IL17.load", ]
+    
+    # Mann-Whitney
+    mw.load <- wilcox.test(Delta_rel_abundance ~ Treatment, data = d.load, paired = FALSE)
+    mw.maint <- wilcox.test(Delta_rel_abundance ~ Treatment, data = d.maint, paired = FALSE)
+    
+    # store stats
+    p.val[j, 1] <- taxa.names[j]
+    p.val[j, 2] <- mw.load$p.value
+    p.val[j, 3] <- mw.maint$p.value
+  }
+  
+  # save table of stats
+  write.csv(p.val, file = ".../IL17.TNF/16S/jobs/5_specific.taxa_delta.rel.abund_R/p.value.table.csv")
+}
+
