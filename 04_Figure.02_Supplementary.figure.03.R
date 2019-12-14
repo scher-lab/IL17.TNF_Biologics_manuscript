@@ -1,10 +1,10 @@
-################################################################ 
-## R script                                                   ##
-## Project: IL17.TNF Biologics manuscript                     ##
-## Figure 02, Supplementary figure 03, Supplementary table 04	##
-## 16S data				                                            ##
-## Author: JM                                                 ##
-################################################################
+################################################################# 
+## R script                                                    ##
+## Project: IL17.TNF Biologics manuscript                      ##
+## Figure 02, Supplementary figure 03, Supplementary table 04	 ##
+## 16S data				                                             ##
+## Author: JM                                                  ##
+#################################################################
 
 ### Brief description:
 ### This script covers the code for Figure 02, Supplementary figure 03 and Supplementary table 04
