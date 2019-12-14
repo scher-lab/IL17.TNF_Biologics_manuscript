@@ -1,20 +1,20 @@
 ################################################################# 
 ## R script                                                    ##
 ## Project: IL17.TNF Biologics manuscript                      ##
-## Figure 02, Supplementary figure 03, Supplementary table 04  ##
+## Figure 02, Supplementary figure 03, Supplementary table 02  ##
 ## 16S data                                                    ##
 ## Author: JM                                                  ##
 #################################################################
 
 ### Brief description:
-### This script covers the code for Figure 02, Supplementary figure 03 and Supplementary table 04
+### This script covers the code for Figure 02, Supplementary figure 03 and Supplementary table 02
 
 ### Figure 02, Supplementary Figure 03:
 ### Panels A and D: TNFi relative abundance lineplots
 ### Panels B and E: IL-17i relative abundance lineplots
 ### Panels C and F: Boxplots representing magnitude of relative abundance change in TNFi and IL-17i subsets
 
-### Supplementary table 4
+### Supplementary table 02
 ### P-values pre-post treatment in the TNFi and IL-17i cohorts
 
 ############################################################################
