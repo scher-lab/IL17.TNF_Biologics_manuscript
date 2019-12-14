@@ -1,13 +1,13 @@
-#################################################################
-## R script                                                    ##
-## Project: IL17.TNF Biologics manuscript                      ##
-## Figure 04, Supplementary figure 05, Supplementary table 04  ##
-## ITS data                                                    ##
-## Author: JM                                                  ##
-#################################################################
+############################################
+## R script                               ##
+## Project: IL17.TNF Biologics manuscript ##
+## Figure 04, Supplementary figure 05     ##
+## ITS data                               ##
+## Author: JM                             ##
+############################################
 
 ### Brief description:
-### This script covers the code for Figure 04, Supplementary figure 05 and Supplementary table 04
+### This script covers the code for Figure 04 and Supplementary figure 05
 
 ### Figure 04:
 ### Panel A: Alpha diversity, shannon
@@ -18,9 +18,6 @@
 ### Supplementary figure 05:
 ### Panel A: Alpha diversity, observed OTUs
 ### Panel B: Alpha diversity, simpson
-
-### Supplementary table 04:
-### P-values
 
 ############################################################################
 ############################################################################
