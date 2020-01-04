@@ -40,7 +40,7 @@ b = ".../IL17.TNF/ITS/outputs/8_biom_R/otu_table_R1.json"
 biom = import_biom(b, taxaPrefix = F)
 
 # import mapping file
-# Note: must leave A1 cell of mapping file empty for R compatibility
+# note: must leave A1 cell empty for R compatibility
 m = ".../IL17.TNF/ITS/inputs/map/Map_IL17.TNF_ITS_all_v2_R.txt"
 map = sample_data(read.table(m, header = TRUE, sep = "\t", row.names = 1))
 
@@ -74,8 +74,7 @@ phy_ITS.R1_zr <- transform_sample_counts(phy_ITS.R1_z, rel_abundance)
 ### Subset phyloseq objects ###
 
 # filter samples
-# Note: this step was performed because the original biom file contained a number of samples that were not relevant to the final analysis.
-
+# note: this step is performed because the original biom file contains samples that are not relevant to the final analysis
 phy_ITS.R1_human <- subset_samples(phy_ITS.R1_z, Host == "human")
 phy_ITS.R1_human_clean <- subset_samples(phy_ITS.R1_human, Filter_all_analysis == "keep")
 
@@ -98,6 +97,7 @@ phy_ITS.R1_human_IL17.B.per.D <- subset_samples(phy_ITS.R1_human_IL17.B, (sample
 rownames(sample_data(phy_ITS.R1_human_IL17.B.per.D))
 rownames(sample_data(phy_ITS.R1_human_IL17.D))
 
+# merge
 phy_ITS.R1_human_TNF.B.C <- merge_phyloseq(phy_ITS.R1_human_TNF.B, phy_ITS.R1_human_TNF.C)
 phy_ITS.R1_human_IL17.B.C <- merge_phyloseq(phy_ITS.R1_human_IL17.B, phy_ITS.R1_human_IL17.C)
 phy_ITS.R1_human_IL17.B.D <- merge_phyloseq(phy_ITS.R1_human_IL17.B.per.D, phy_ITS.R1_human_IL17.D)
@@ -107,9 +107,9 @@ phy_ITS.R1_human_TNF.B.C_IL17.B.C <- merge_phyloseq(phy_ITS.R1_human_TNF.B.C, ph
 phy_ITS.R1_human_TNF.B.C_IL17.B.D <- merge_phyloseq(phy_ITS.R1_human_TNF.B.C, phy_ITS.R1_human_IL17.B.D)
 phy_ITS.R1_human_TNF.B.C_IL17.B.C.D <- merge_phyloseq(phy_ITS.R1_human_TNF.B.C, phy_ITS.R1_human_IL17.B.C.D)
 
-##########
+########################################
 
-# Human filtered (samples/subjects w/ low reads removed) # 
+# samples/subjects w/ low reads removed # 
 phy_ITS.R1_human_clean_fR1 <- subset_samples(phy_ITS.R1_human_clean, Filter_alpha_beta != "filter_R1.R2")
 phy_ITS.R1_human_TNF_fR1 <- subset_samples(phy_ITS.R1_human_clean_fR1, Treatment == "1_TNF")
 phy_ITS.R1_human_IL17_fR1 <- subset_samples(phy_ITS.R1_human_clean_fR1, Treatment == "2_IL17")
@@ -130,6 +130,7 @@ phy_ITS.R1_human_IL17.B.per.D_fR1 <- subset_samples(phy_ITS.R1_human_IL17.B_fR1,
 rownames(sample_data(phy_ITS.R1_human_IL17.B.per.D_fR1))
 rownames(sample_data(phy_ITS.R1_human_IL17.D_fR1))
 
+# merge
 phy_ITS.R1_human_TNF.B.C_fR1 <- merge_phyloseq(phy_ITS.R1_human_TNF.B_fR1, phy_ITS.R1_human_TNF.C_fR1)
 phy_ITS.R1_human_IL17.B.C_fR1 <- merge_phyloseq(phy_ITS.R1_human_IL17.B_fR1, phy_ITS.R1_human_IL17.C_fR1)
 phy_ITS.R1_human_IL17.B.D_fR1 <- merge_phyloseq(phy_ITS.R1_human_IL17.B.per.D_fR1, phy_ITS.R1_human_IL17.D_fR1)
@@ -145,19 +146,11 @@ phy_ITS.R1_human_TNF.B.C_IL17.B.C.D_fR1 <- merge_phyloseq(phy_ITS.R1_human_TNF.B
 
 ### Rarefy to even depth ###
 
-# Rarefaction performed on filtered phyloseq objects only (i.e. w/ suffix "fR1")
-
-# Depth 1000
-# Sample w/o replacement
-
+# rarefaction performed on filtered phyloseq objects only (i.e. w/ suffix "fR1")
+# depth 1000 to match 16S data
 phy_ITS.R1_human_clean_fR1_even1000 <- rarefy_even_depth(phy_ITS.R1_human_clean_fR1, sample.size = 1000, rngseed = 711, replace = FALSE, trimOTUs = TRUE, verbose = TRUE)
 
-############################################################################
-############################################################################
-############################################################################
-
-### Subset rarefied phyloseq objects ###
-
+# subset rarefied phyloseq objects
 phy_ITS.R1_human_TNF_fR1_even1000 <- subset_samples(phy_ITS.R1_human_clean_fR1_even1000, Treatment == "1_TNF")
 phy_ITS.R1_human_IL17_fR1_even1000 <- subset_samples(phy_ITS.R1_human_clean_fR1_even1000, Treatment == "2_IL17")
 phy_ITS.R1_human_TNF.B_fR1_even1000 <- subset_samples(phy_ITS.R1_human_TNF_fR1_even1000, Timepoint_revised == "B")
