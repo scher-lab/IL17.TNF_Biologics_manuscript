@@ -252,3 +252,4 @@ cat(reads[i], file = fs, append = TRUE)
 cat("\n\n", file = fs, append = TRUE)
 cat("Mann-Whitney U test:\n", file = fs, append = TRUE)
 capture.output(mw, file = fs, append = TRUE)
+
