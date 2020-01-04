@@ -6,9 +6,11 @@
 ############################################
 
 ### Brief description:
-### This script prepares all of the necessary objects that are used to create manuscript figures from 16S data.
-### It does so by importing a biom file that contains the joined sequence data from all of the samples (generated via QIIME v.1.9.1), 
-### a mapping file and a tree file (from greengenes gg_13_8).
+### This script creates all of the necessary phyloseq objects that are used to generate manuscript figures from 16S data.
+### Imported files include:
+### 1) biom file - contains joined sequence data; generated with QIIME v.1.9.1
+### 2) mapping file - contains metadata
+### 3) tree file - from greengenes gg_13_8; 97% identity
 
 ############################################################################
 ############################################################################
@@ -36,7 +38,7 @@ b = ".../IL17.TNF/16S/outputs/6_biom_R/otu_table.json"
 biom = import_biom(b, taxaPrefix = F)
 
 # import mapping file
-# Note: must leave A1 cell of mapping file empty for R compatibility
+# note: must leave A1 cell empty for R compatibility
 m = ".../IL17.TNF/16S/inputs/map/Map_IL17.TNF_16S_all_v2_R.txt"
 map = sample_data(read.table(m, header = TRUE, sep = "\t", row.names = 1))
 
@@ -46,7 +48,7 @@ ph = phyloseq(otu_table(biom), tax_table(biom), map)
 # provide column names to separate different taxonomic levels
 colnames(tax_table(ph)) = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
 
-# load the tree file (use 'unannotated.tree')
+# load tree file (use 'unannotated.tree')
 t = ".../greengenes/gg_13_8_otus/trees/97_otus_unannotated.tree"
 tree = import_qiime(treefilename = t) 
 
@@ -81,7 +83,7 @@ phy_16S_zr <- transform_sample_counts(phy_16S_z, rel_abundance)
 # IL17: 1) B visit = baseline/pre, C visit = loading, D visit = maintenance
 
 # filter samples
-# Note: this step was performed because the original biom file contained a number of samples that were not relevant to the final analysis.
+# Note: this step is performed because the original biom file contains samples that are not relevant to the final analysis
 phy_16S_human_clean <- subset_samples(phy_16S_z, Filter_all_analysis == "keep")
 
 phy_16S_human_TNF <- subset_samples(phy_16S_human_clean, Treatment == "1_TNF")
@@ -103,6 +105,7 @@ phy_16S_human_IL17.B.per.D <- subset_samples(phy_16S_human_IL17.B, (sample_data(
 rownames(sample_data(phy_16S_human_IL17.B.per.D))
 rownames(sample_data(phy_16S_human_IL17.D))
 
+# merge
 phy_16S_human_TNF.B.C <- merge_phyloseq(phy_16S_human_TNF.B, phy_16S_human_TNF.C)
 phy_16S_human_IL17.B.C <- merge_phyloseq(phy_16S_human_IL17.B, phy_16S_human_IL17.C)
 phy_16S_human_IL17.B.D <- merge_phyloseq(phy_16S_human_IL17.B.per.D, phy_16S_human_IL17.D)
