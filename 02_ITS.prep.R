@@ -6,12 +6,12 @@
 ############################################
 
 ### Brief description:
-### This script prepares all of the necessary objects that are used to create manuscript figures from ITS data.
-### It does so by importing a biom file that contains the forward sequence data from all of the samples (generated via QIIME v.1.9.1) and a mapping file. 
-### Prior to creating a biom file, paired-end trimming of sequences was performed with the Cutadapt program using the following adapters:
-### forward: TAGAGGAAGTAAAAGTCGTAA...TTACGACTTTTACTTCCTCTA
-### reverse: TTYRCTRCGTTCTTCATC...GATGAAGAACGYAGYRAA
-### 
+### This script creates all of the necessary phyloseq objects that are used to generate manuscript figures from ITS data.
+### Imported files include:
+### 1) biom file - contains forward sequence data; generated with QIIME v.1.9.1; paired-end trimming of sequences was 
+### performed with Cutadapt using the following adapters: forward - TAGAGGAAGTAAAAGTCGTAA...TTACGACTTTTACTTCCTCTA; 
+### reverse - TTYRCTRCGTTCTTCATC...GATGAAGAACGYAGYRAA
+### 2) mapping file - contains metadata
 
 ############################################################################
 ############################################################################
