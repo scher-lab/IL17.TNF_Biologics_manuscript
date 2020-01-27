@@ -6,8 +6,10 @@
 ############################################
 
 ### Brief description:
-### This script creates all of the necessary phyloseq objects that are used to generate manuscript figures from 16S data.
-### Imported files include:
+### This script creates all of the necessary phyloseq objects that are used to generate manuscript figures/tables from 16S data.
+### Please see the corresponding code for specific figures/tables.
+
+### Imported files:
 ### 1) biom file - contains joined sequence data; generated with QIIME v.1.9.1
 ### 2) mapping file - contains metadata
 ### 3) tree file - from greengenes gg_13_8; 97% identity
@@ -78,12 +80,12 @@ phy_16S_zr <- transform_sample_counts(phy_16S_z, rel_abundance)
 
 ### Subset phyloseq objects ###
 
-# Note:
+# note:
 # TNF: 1) B visit = baseline/pre, C visit = maintenance
 # IL17: 1) B visit = baseline/pre, C visit = loading, D visit = maintenance
 
 # filter samples
-# Note: this step is performed because the original biom file contains samples that are not relevant to the final analysis
+# note: this step is performed because the original biom file contains samples that are not relevant to the final analysis
 phy_16S_human_clean <- subset_samples(phy_16S_z, Filter_all_analysis == "keep")
 
 phy_16S_human_TNF <- subset_samples(phy_16S_human_clean, Treatment == "1_TNF")
@@ -97,7 +99,7 @@ phy_16S_human_IL17.C <- subset_samples(phy_16S_human_IL17, Timepoint_revised == 
 phy_16S_human_IL17.D <- subset_samples(phy_16S_human_IL17, Timepoint_revised == "D")
 
 # IL17 visits B and D do not have the same number of samples (some timepoints are missing from visit D)
-# create phyloseq objects from timepoints B and D that have identical subjects (i.e. no missing timepoints)
+# create matching phyloseq objects from timepoints B and D (i.e. no missing timepoints)
 IL17.D_subjects <- as.vector(sample_data(phy_16S_human_IL17.D)$Subject)
 phy_16S_human_IL17.B.per.D <- subset_samples(phy_16S_human_IL17.B, (sample_data(phy_16S_human_IL17.B)$Subject) %in% IL17.D_subjects)
 
@@ -121,10 +123,8 @@ phy_16S_human_TNF.B.C_IL17.B.C.D <- merge_phyloseq(phy_16S_human_TNF.B.C, phy_16
 
 ### Rarefy to even depth ###
 
-# Depth 1000
-# Sample w/o replacement
-
-# Human main cohort
+# depth 1000
+# sample w/o replacement
 phy_16S_human_clean_even1000 <- rarefy_even_depth(phy_16S_human_clean, sample.size = 1000, rngseed = 711, replace = FALSE, trimOTUs = TRUE, verbose = TRUE)
 
 ############################################################################
@@ -156,7 +156,7 @@ phy_16S_human_TNF.B.C_IL17.B.C.D_even1000 <- merge_phyloseq(phy_16S_human_TNF.B.
 
 ### Statistics functions ###
 
-# All plot statistics: mean, std deviation, median, min value, max value, 10%ile, 25%ile, 75%ile, 90%ile
+# all plot statistics: mean, std deviation, median, min value, max value, 10%ile, 25%ile, 75%ile, 90%ile
 stats.all = function(x) {
   mean <- mean(x)
   stddev <- sd(x)
@@ -172,7 +172,7 @@ stats.all = function(x) {
            per10 = per10, per25 = per25, per75 = per75,  per90 = per90))
 }
 
-# Boxplot statistics: median, 25%ile, 75%ile
+# boxplot statistics: median, 25%ile, 75%ile
 stats.boxplot <- function(x) {
   m <- median(x)
   per25 <- as.numeric(quantile(x, prob = c(0.25)))
@@ -180,7 +180,7 @@ stats.boxplot <- function(x) {
   return(c(y = m, ymin = per25, ymax = per75))
 }
 
-# Whiskers statistics: median, min value, max value
+# whiskers statistics: median, min value, max value
 stats.whiskers = function(x) {
   m <- median(x)
   per10 <- as.numeric(quantile(x, prob = c(0.10)))
@@ -195,7 +195,7 @@ stats.whiskers = function(x) {
 ### Reads ###
 
 # directory for storing files
-dir = ".../IL17.TNF/16S/outputs/8_reads_MAN/"
+dir = ".../IL17.TNF/16S/outputs/8_reads/"
 
 # background theme
 bkg <- theme_few() +
