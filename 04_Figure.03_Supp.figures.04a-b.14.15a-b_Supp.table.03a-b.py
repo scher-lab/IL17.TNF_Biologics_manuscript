@@ -4,12 +4,13 @@
 ## Figure 03                               ##
 ## Supplementary figures 04a-b, 14, 15a-b  ##
 ## Supplementary tables 03a-b              ##
+## Supplementary tables 03a-b              ##
 ## 16S data                                ##
 #############################################
 
 ### Brief description:
 
-### Figure 03
+### Figure 03:
 ### Panel A: Bacterial co-occurrence network pre-IL-17i treatment
 ### Panel B: Bacterial co-occurrence network post-IL-17i treatment (maintenance visit)
 
@@ -21,6 +22,12 @@
 ### Supplementary figure 15a: Expanded bacterial co-occurrence network pre-IL-17i treatment
 ### Supplementary figure 15b: Expanded bacterial co-occurrence network post-IL-17i treatment (maintenance visit)
 
+### Supplementary table 03a: TNFi bacterial co-occurrence network nodes
+### Supplementary table 03b: IL-17i bacterial co-occurrence network nodes
+
+### Below is a script that runs SparCC on the relevant OTU tables. 
+### SparCC results are imported into Cytoscape to generage networks.
+### Inkscape is used to edit the network graphs. 
 
 #!/usr/env python
 
