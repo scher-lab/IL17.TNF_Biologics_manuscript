@@ -3,15 +3,15 @@ Code affiliated with the manuscript, "IL-17 Inhibition in Spondyloarthritis Asso
 
 The code is split across figures, supplementary figures and tables.<br/>
 The following figures/tables are not included because they did not require computational analysis:<br/>
-*Figure 06<br/>
-*Supplementary figure 13<br/>
-*Supplementary table 01<br/>
+- Figure 06<br/>
+- Supplementary figure 13<br/>
+- Supplementary table 01<br/>
 
 Some of the code was adjusted to reflect only that is shown in the manuscript.<br/>
 
 The following files are included:<br/>
-*<b>01_16S.prep.R:</b> preparation for 16S data analysis<br/>
-*<b>02_ITS.prep.R:</b> preparation for ITS data analysis<br/>
+- <b>01_16S.prep.R:</b> preparation for 16S data analysis<br/>
+* <b>02_ITS.prep.R:</b> preparation for ITS data analysis<br/>
 *<b>03_Figure.01_Supp.figure.02.R:</b> Figure 01; Supplementary figure 02<br/>
 *<b>04_Figure.02_Supp.figure.03_Supp.table.02.R:</b> Figure 02; Supplementary figure 03; Supplementary table 02<br/>
 *<b>05_Figure.03_Supp.figures.04a-b.14.15a-b_Supp.tables.03a-b.sh:</b> Figure 03; Supplementary figures 04a-b, 14, 15a-b; Supplementary tables 03a-b<br/>
