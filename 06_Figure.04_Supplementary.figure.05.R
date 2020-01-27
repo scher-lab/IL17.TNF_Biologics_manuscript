@@ -3,11 +3,9 @@
 ## Project: IL17.TNF Biologics manuscript ##
 ## Figure 04, Supplementary figure 05     ##
 ## ITS data                               ##
-## Author: JM                             ##
 ############################################
 
 ### Brief description:
-### This script covers the code for Figure 04 and Supplementary figure 05
 
 ### Figure 04:
 ### Panel A: Alpha diversity, shannon
@@ -41,7 +39,7 @@ library(scales)
 
 ### Statistics functions ###
 
-# All plot statistics: mean, std deviation, median, min value, max value, 10%ile, 25%ile, 75%ile, 90%ile
+# all plot statistics: mean, std deviation, median, min value, max value, 10%ile, 25%ile, 75%ile, 90%ile
 stats.all = function(x) {
   mean <- mean(x)
   stddev <- sd(x)
@@ -57,7 +55,7 @@ stats.all = function(x) {
            per10 = per10, per25 = per25, per75 = per75,  per90 = per90))
 }
 
-# Boxplot statistics: median, 25%ile, 75%ile
+# boxplot statistics: median, 25%ile, 75%ile
 stats.boxplot <- function(x) {
   m <- median(x)
   per25 <- as.numeric(quantile(x, prob = c(0.25)))
@@ -65,7 +63,7 @@ stats.boxplot <- function(x) {
   return(c(y = m, ymin = per25, ymax = per75))
 }
 
-# Whiskers statistics: median, min value, max value
+# whiskers statistics: median, min value, max value
 stats.whiskers = function(x) {
   m <- median(x)
   per10 <- as.numeric(quantile(x, prob = c(0.10)))
@@ -91,7 +89,7 @@ bkg <- theme_few() +
   theme(panel.border = element_rect(color = "black", fill = NA, size = 1))
 
 # directory for storing files
-dir = ".../IL17.TNF/ITS/jobs/1_alpha.div_boxplots/"
+dir = ".../IL17.TNF/ITS/jobs/1_alpha.div_boxplots_R/"
 
 # list of phyloseq objects to process
 pseqs <- list(physeq = phy_ITS.R1_human_TNF.B.C_IL17.B.C.D_fR1_even1000)
@@ -102,7 +100,7 @@ pseq.names <- c("ITS.R1_human_TNF.B.C_IL17.B.C.D_fR1_even1000")
 # list of diversity calculations
 divs <- c("Observed", "Shannon", "Simpson")
 
-##############
+############################
 
 ## Plotting ##
 
@@ -148,7 +146,7 @@ for (i in seq_along(pseqs)) {
     # choose colors for plot
     col1 <- c("#ffb400", "#c40018", "#53d397", "#448ef6", "#8559a5")
     
-    # plot and save alpha diversity
+    # plot and save
     p <- ggplot(data = d, aes(x = Pre_post_treatment_det, y = Diversity, fill = Pre_post_treatment_det)) +
       stat_summary(fun.data = stats.whiskers, geom = "errorbar", 
                    color = "black", size = 0.8, width = 0.3) +
@@ -181,6 +179,10 @@ for (i in seq_along(pseqs)) {
     
     fps = paste(dir.new, filename_plot.stats, sep = "")
     write.csv(s, file = fps)
+    
+    ############################
+    
+    ## General Statistics ##
     
     # create file to save general statistics
     fs = paste(dir.new, filename_stats, sep = "")
@@ -266,7 +268,7 @@ pseq.names <- c("ITS.R1_human_TNF.B.C_IL17.B.C.D_fR1_even1000")
 # list of distance methods
 dists <- c("bray")
 
-##############
+############################
 
 ## Plotting ##
 
@@ -301,7 +303,7 @@ for (i in seq_along(pseqs)) {
     # choose colors
     my.cols = col1 
     
-    # plot beta diversity
+    # plot and save
     p <- plot_ordination(phylo, ordination = ord, color = "Pre_post_treatment_det") +
       geom_vline(xintercept = 0, color = "#919190", size = 0.5) +
       geom_hline(yintercept = 0, color = "#919190", size = 0.5) +
@@ -311,7 +313,6 @@ for (i in seq_along(pseqs)) {
       scale_x_continuous(labels = f.dec) + # 2 decimal places on x-axis
       scale_y_continuous(labels = f.dec)   # 2 decimal places on y-axis
     
-    # save plot
     fp = paste(dir.new, filename_plot_pre.post.tx, sep = "")
     pdf(file = fp)
     plot(p)
@@ -333,22 +334,13 @@ col1 <- c("#c40018", "#448ef6", "#8559a5")
 # shapes
 shape1 <- c(16,15,17)
 
-# background themes
+# background theme
 bkg <- theme_classic() +
   theme(axis.text.x = element_text(size = 14, face = "bold", color = "black")) +
   theme(axis.text.y = element_text(size = 14, color = "black")) +
   theme(axis.title.y = element_text(size = 20, face = "bold", color = "black")) +
   theme(axis.title.y = element_text(margin = unit(c(0, 8, 0, 0), "mm"))) +
   theme(legend.position = "none")
-
-bkg_qqplot <- theme_bw() +
-  theme(axis.text = element_text(size = 10, color = "black")) +
-  theme(axis.title = element_text(size = 11, color = "black", face = "bold")) +
-  theme(axis.title.x = element_text(margin = unit(c(5, 0, 0, 0), "mm"))) +
-  theme(axis.title.y = element_text(margin = unit(c(0, 5, 0, 0), "mm"))) +
-  theme(legend.text = element_text(size = 8)) +
-  theme(legend.title = element_text(size = 10)) +
-  theme(plot.title = element_text(size = 12, color = "black", face = "bold"))
 
 # directory for storing files
 dir = ".../IL17.TNF/ITS/jobs/2_beta.div_pre.post.tx_R/"
@@ -362,7 +354,7 @@ pseq.names <- c("ITS.R1_human_TNF.B.C_IL17.B.C.D_fR1_even1000")
 # list of distance methods 
 dists <- c("bray")
 
-##############
+############################
 
 ## Plotting ##
 
@@ -387,8 +379,8 @@ for (i in seq_along(pseqs)) {
     # remove empty OTUs
     phylo <- subset_taxa(pseqs[[i]], rowSums(otu_table(pseqs[[i]])) > 0)
     
+    # create and save distance matrix
     d <- distance(phylo, method = dists[j])    
-    
     dm <- data.matrix(d, rownames.force = TRUE)
     
     # save distance matrix
@@ -399,15 +391,15 @@ for (i in seq_along(pseqs)) {
     row = rownames(dm)
     col = colnames(dm)
     
-    # store indices of upper triangle of distance matrix excluding diagnoal 
-    # only upper triangle is used as matrix is symmetrical
+    # store indices of upper triangle from distance matrix, excluding diagnoal 
+    # only upper triangle is used since matrix is symmetrical
     ind <- which(upper.tri(dm, diag = FALSE), arr.ind = TRUE)
     
     # designate boxplot categories
     cat <- c("1_TNF", "2_IL17_load", "3_IL17_maint")
     
-    # create lists for storing sample names, treatment timepoints, distance values, and category names
-    # each list contains a separate vector for each boxplot category
+    # create lists for storing sample names, treatment timepoints, distance values and category names
+    # every list contains a separate vector for each boxplot category
     sample.names.1 <- vector(mode = "list", length = length(cat))
     names(sample.names.1) <- c(paste(cat, sep=","))
     
@@ -478,7 +470,7 @@ for (i in seq_along(pseqs)) {
               graph.cat = "3_IL17_maint"
             }
             
-            # assign names of samples, treatment-timepoints, boxplot category, and distance value
+            # assign names of samples, treatment-timepoints, boxplot category and distance value
             sample.names.1[[graph.cat]][c] <- row[index.row]
             sample.names.2[[graph.cat]][c] <- col[index.col]
             tx.timepoint.1[[graph.cat]][c] <- row.tx.timepoint
@@ -542,16 +534,16 @@ for (i in seq_along(pseqs)) {
     fps = paste(dir.new, filename_plot.stats, sep = "")
     write.csv(s, file = fps)
     
-    # calculate general statistics
+    ############################
+
+    ## General Statistics ##
    
-    # keep TNF but subset IL17 into loading and maintenance subcategories
-    # comparison is done between TNF and IL17
+    # subset IL17 into loading and maintenance subcategories
     d.IL17.load <- comb.data.s[comb.data.s$Category != "3_IL17_maint", ]
     d.IL17.maint <- comb.data.s[comb.data.s$Category != "2_IL17_load", ]
     
     # TNF-IL17 loading #
-    
-    # Mann-Whitney
+    # mann-whitney
     mw.IL17.load <- wilcox.test(Distance ~ Category, data = d.IL17.load, paired = FALSE)
     
     # save calculations
@@ -566,8 +558,7 @@ for (i in seq_along(pseqs)) {
     capture.output(mw.IL17.load, file = fs.IL17.load, append = TRUE)
     
     # TNF-IL17 maintenance #
-    
-    # Mann-Whitney
+    # mann-whitney
     mw.IL17.maint <- wilcox.test(Distance ~ Category, data = d.IL17.maint, paired = FALSE)
     
     # save calculations
@@ -631,11 +622,11 @@ pseq.names <- c("ITS.R1_human_TNF.B.C_IL17.B.C.D")
 # taxanomic rank
 tax.rank <- c("Order")
 
-##############
+############################
 
 ## Plotting ##
 
-# for each phyloseq object in pseqs, perform taxa summary by treatment visit
+# for each phyloseq object in pseqs, perform taxa summary by treatment-visit
 for (i in seq_along(pseqs)) {
   
   # create new directory to store results
@@ -673,15 +664,14 @@ for (i in seq_along(pseqs)) {
   # choose color palatte based on total number of taxa
   c <- sample(col, length(r.sorted$Order))
   
-  # create plot
+  # create plot and save
   p <- plot_bar(tm, x = "Sample", fill = "Order") + 
     scale_fill_manual(breaks = top.taxa, values = c) +
     scale_x_discrete(labels = c("TNFi\npre", "TNFi\nmaint", "IL-17i\npre", "IL-17i\nload", "IL-17i\nmaint")) +
     #scale_y_continuous(labels = percent) +
     xlab("") + ylab("Relative abundance") +
     bkg 
-  
-  # save plot      
+     
   fp = paste(dir.new, filename_plot, sep = "")
   pdf(file = fp, width = 8)
   plot(p)
