@@ -2,7 +2,6 @@
 ## R script                               ##
 ## Project: IL17.TNF_Biologics_manuscript ##
 ## ITS prep                               ##
-## Author: JM                             ##
 ############################################
 
 ### Brief description:
