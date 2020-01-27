@@ -4,7 +4,6 @@
 ## Figure 03                               ##
 ## Supplementary figures 04a-b, 14, 15a-b  ##
 ## Supplementary tables 03a-b              ##
-## Supplementary tables 03a-b              ##
 ## 16S data                                ##
 #############################################
 
