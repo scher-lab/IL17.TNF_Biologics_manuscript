@@ -3,19 +3,17 @@
 ## Project: IL17.TNF Biologics manuscript                     ##
 ## Figure 05, Supplementary figure 06, Supplementary table 04 ##
 ## ITS data				                      ##
-## Author: JM                                                 ##
 ################################################################
 
 ### Brief description:
-### This script covers the code for Figure 05, Supplementary figure 06 and Supplemenatry table 04
 
 ### Figure 05, Supplementary figure 06:
-### Panels A and D: TNFi relative abundance lineplots
-### Panels B and E: IL-17i relative abundance lineplots
+### Panels A and D: TNFi relative abundance line plots
+### Panels B and E: IL-17i relative abundance line plots
 ### Panels C and F: Boxplots representing magnitude of relative abundance change in TNFi and IL-17i subsets
 
 ### Supplementary table 04:
-### P-values
+### P-value calculations of changes in taxa relative abundance pre-post treatment with TNFi and IL-17i
 
 ############################################################################
 ############################################################################
@@ -41,7 +39,7 @@ library(PMCMRplus)
 
 ### Statistics functions ###
 
-# All plot statistics: mean, std deviation, median, min value, max value, 10%ile, 25%ile, 75%ile, 90%ile
+# all plot statistics: mean, std deviation, median, min value, max value, 10%ile, 25%ile, 75%ile, 90%ile
 stats.all = function(x) {
   mean <- mean(x)
   stddev <- sd(x)
@@ -57,7 +55,7 @@ stats.all = function(x) {
            per10 = per10, per25 = per25, per75 = per75,  per90 = per90))
 }
 
-# Boxplot statistics: median, 25%ile, 75%ile
+# boxplot statistics: median, 25%ile, 75%ile
 stats.boxplot <- function(x) {
   m <- median(x)
   per25 <- as.numeric(quantile(x, prob = c(0.25)))
@@ -65,7 +63,7 @@ stats.boxplot <- function(x) {
   return(c(y = m, ymin = per25, ymax = per75))
 }
 
-# Whiskers statistics: median, min value, max value
+# whiskers statistics: median, min value, max value
 stats.whiskers = function(x) {
   m <- median(x)
   per10 <- as.numeric(quantile(x, prob = c(0.10)))
@@ -77,14 +75,14 @@ stats.whiskers = function(x) {
 ############################################################################
 ############################################################################
 
-### Relative abundance lineplots ###
+### Line plots of relative abudnance over time ###
+
+## Setup ##
 
 # colors
-
 # green: expansion
 # orange: contraction
 # grey: <10% change
-
 col1 <- c("#53d397", "#fc8a15", "#bbbbbb")
 
 # background theme
@@ -101,11 +99,9 @@ bkg <- theme_bw() +
 # directory for storing files
 dir = ".../IL17.TNF/ITS/jobs/5_specific.taxa_lineplots_R/"
 
-#############################
+############################
 
-## TNF subset ##
-
-## Setup ##
+## Plotting - TNFi subset ##
 
 # list of phyloseq objects to process
 pseqs <- list(physeq = phy_ITS.R1_human_TNF.B.C)
@@ -118,20 +114,16 @@ taxa.names <- c("o__Saccharomycetales",
                 "g__Candida", 
 		"s__Candida_albicans", "s__Saccharomyces_cerevisiae") 
 
-## Plotting ##
-
-# for each phyloseq object in pseqs, calculate the relative abudnance
-# over time for specific taxa
+# for each phyloseq object in pseqs, calculate the relative abudnance over time for specific taxa
 for (i in seq_along(pseqs)) {
   
-  # merge phyloseq objects to each taxnomic level
+  # merge phyloseq objects at each taxnomic level
   order <- tax_glom(pseqs[[i]], taxrank = "Order", NArm = FALSE)
   genus <- tax_glom(pseqs[[i]], taxrank = "Genus", NArm = FALSE)
   species <- tax_glom(pseqs[[i]], taxrank = "Species", NArm = FALSE)
   
   # transform to relative abundance
   rel_abundance = function(x) { x/sum(x) } # function
-  
   to <- transform_sample_counts(order, rel_abundance)
   tg <- transform_sample_counts(genus, rel_abundance)
   ts <- transform_sample_counts(species, rel_abundance)
@@ -186,7 +178,7 @@ for (i in seq_along(pseqs)) {
     ft = paste(dir.taxa, filename_table, sep = "")
     write.csv(d.final, file = ft)
     
-    # create line plot
+    # create line plot and save
     p <- ggplot(data = d.final, aes(x = Timepoint_revised, y = Taxa_rel_abundance, group = Subject)) + 
       geom_line(aes(color = Change_type), size = 1) +
       geom_text_repel(data = subset(d, Timepoint_revised == "B"), 
@@ -198,7 +190,6 @@ for (i in seq_along(pseqs)) {
       xlab(NULL) + ylab("Relative abundance") + 
       bkg 
     
-    # save line plot
     fp = paste(dir.taxa, filename_plot, sep = "")
     pdf(file = fp)
     plot(p)
@@ -206,11 +197,9 @@ for (i in seq_along(pseqs)) {
   }
 }
 
-#############################
+############################
 
-## IL-17 subset ##
-
-## Setup ##
+## Plotting - IL-17i subset ##
 
 # list of phyloseq objects to process
 pseqs <- list(physeq = phy_ITS.R1_human_IL17.B.C.D)
@@ -223,10 +212,7 @@ taxa.names <- c("o__Saccharomycetales",
                 "g__Candida", 
                 "s__Candida_albicans", "s__Saccharomyces_cerevisiae") 
 
-## Plotting ##
-
-# for each phyloseq object in pseqs, calculate the relative abudnance
-# over time for specific taxa
+# for each phyloseq object in pseqs, calculate the relative abudnance over time for specific taxa
 for (i in seq_along(pseqs)) {
   
   # merge phyloseq objects to each taxnomic level
@@ -236,7 +222,6 @@ for (i in seq_along(pseqs)) {
   
   # transform to relative abundance
   rel_abundance = function(x) { x/sum(x) } # function
-  
   to <- transform_sample_counts(order, rel_abundance)
   tg <- transform_sample_counts(genus, rel_abundance)
   ts <- transform_sample_counts(species, rel_abundance)
@@ -300,7 +285,7 @@ for (i in seq_along(pseqs)) {
     ft = paste(dir.taxa, filename_table, sep = "")
     write.csv(d.final, file = ft)
     
-    # create line plot
+    # create line plot and save
     p <- ggplot(data = d.final, aes(x = Timepoint_revised, y = Taxa_rel_abundance, group = Subject)) + 
       geom_line(data = subset(d.final, Timepoint_revised != "D"), 
                 aes(group = Subject, color = Change_type.BC), size = 1) +
@@ -315,14 +300,12 @@ for (i in seq_along(pseqs)) {
       xlab(NULL) + ylab("Relative abundance") + 
       bkg
     
-    # save line plot
     fp = paste(dir.taxa, filename_plot, sep = "")
     pdf(file = fp)
     plot(p)
     dev.off()
   }
 }
-
 
 ############################################################################
 ############################################################################
@@ -338,7 +321,7 @@ col1 <- c("#c40018", "#448ef6", "#8559a5")
 # shapes
 shape1 <- c(16,15,17)
 
-# background themes
+# background theme
 bkg <- theme_classic() +
   theme(axis.text.x = element_text(size = 20, face = "bold", color = "black")) +
   theme(axis.text.y = element_text(size = 18, color = "black")) +
@@ -360,12 +343,11 @@ taxa.names <- c("o__Saccharomycetales",
                 "g__Candida", 
                 "s__Candida_albicans", "s__Saccharomyces_cerevisiae") 
 
-################################################################################
+#############################
 
 ## Plotting ##
 
-# for each phyloseq object in pseqs, calculate the relative abudnance
-# over time for specific taxa
+# for each phyloseq object in pseqs, calculate the relative abudnance over time for specific taxa
 for (i in seq_along(pseqs)) {
   
   # merge phyloseq objects
@@ -416,12 +398,12 @@ for (i in seq_along(pseqs)) {
     ftab = paste(dir.taxa, filename_table, sep = "")
     write.csv(d, file = ftab) 
     
-    # subset datasets
+    ############################
     
-    ## TNF ##
-    
+    ## TNFi ##
+	  
     # spread data across timepoints
-    # calculate absolute delta relative abundance
+    # calculate magnitude delta relative abundance
     d.TNF <- d %>%
       subset(select = c("Subject", "Treatment", "Timepoint_revised", "Taxa_rel_abundance")) %>%
       filter(Treatment == "1_TNF") %>% 
@@ -437,12 +419,12 @@ for (i in seq_along(pseqs)) {
     ftab.TNF = paste(dir.taxa, filename_table_TNF, sep = "")
     write.csv(d.TNF, file = ftab.TNF)
     
-    ##########
+    ############################
     
-    ## IL17 loading ##
+    ## IL-17i loading ##
     
     # spread data across timepoints
-    # calculate absolute delta relative abundance
+    # calculate magnitude delta relative abundance
     d.IL17.load <- d %>%
       subset(select = c("Subject", "Treatment", "Timepoint_revised", "Taxa_rel_abundance")) %>%
       filter(Treatment == "2_IL17") %>% 
@@ -461,12 +443,12 @@ for (i in seq_along(pseqs)) {
     ftab.IL17.load = paste(dir.taxa, filename_table_IL17.load, sep = "")
     write.csv(d.IL17.load, file = ftab.IL17.load)
     
-    ##########
+    ############################
     
-    ## IL17 maintenance ##
+    ## IL-17i maintenance ##
     
     # spread data across timepoints
-    # calculate absolute delta relative abundance
+    # calculate magnitude delta relative abundance
     d.IL17.maint <- d %>%
       subset(select = c("Subject", "Treatment", "Timepoint_revised", "Taxa_rel_abundance")) %>%
       filter(Treatment == "2_IL17") %>% 
@@ -486,7 +468,7 @@ for (i in seq_along(pseqs)) {
     ftab.IL17.maint = paste(dir.taxa, filename_table_IL17.maint, sep = "")
     write.csv(d.IL17.maint, file = ftab.IL17.maint)
     
-    ##########
+    ############################
     
     # join subsets
     d.final <- rbind(d.TNF, d.IL17.load, d.IL17.maint)
@@ -495,7 +477,7 @@ for (i in seq_along(pseqs)) {
     ftab.plot = paste(dir.taxa, filename_table_for.plot, sep = "")
     write.csv(d.final, file = ftab.plot)
     
-    # plot TNF vs IL17 absolute delta relative abundance
+    # plot TNFi vs IL-17i magnitude delta relative abundance and save
     p <- ggplot(data = d.final, aes(x = Treatment, y = Delta_rel_abundance, color = Treatment, shape = Treatment)) +
       stat_summary(fun.data = stats.whiskers, geom = "errorbar", 
                    color = "black", size = 1, width = 0.3) +
@@ -508,13 +490,12 @@ for (i in seq_along(pseqs)) {
       ylim(0, 0.6) +
       bkg
     
-    # save plot
     fp = paste(dir.taxa, filename_plot, sep = "")
     pdf(file = fp)
     plot(p)
     dev.off()
     
-    # obtain and save plot statistics
+    # obtain plot statistics and save
     s <- aggregate(Delta_rel_abundance ~ Treatment, data = d.final, stats.all)
     s <- t(s)
     rownames(s) <- c("treatment", "mean", "sd", "median", "min", "max", 
@@ -523,13 +504,15 @@ for (i in seq_along(pseqs)) {
     fps = paste(dir.taxa, filename_plot.stats, sep="")
     write.csv(s, file = fps)
     
-    # calculate general statistics #
+    #############################
+
+    ## General Statistics ##
     
-    # split IL17 into loading and maintenance subcategories
+    # split IL-17i into loading and maintenance subcategories
     d.load <- d.final[d.final$Treatment != "3_IL17.maint", ]
     d.maint <- d.final[d.final$Treatment != "2_IL17.load", ]
     
-    # Mann-Whitney
+    # mann-whitney
     mw.load <- wilcox.test(Delta_rel_abundance ~ Treatment, data = d.load, paired = FALSE)
     mw.maint <- wilcox.test(Delta_rel_abundance ~ Treatment, data = d.maint, paired = FALSE)
     
@@ -553,7 +536,7 @@ for (i in seq_along(pseqs)) {
 ############################################################################
 ############################################################################
 
-### Table of p-values of taxa relative abundance between pre and post visits ###
+### P-value table of taxa relative abundance change between pre and post visits within TNFi and IL-17i cohorts ###
 
 # list of phyloseq objects to process
 pseqs <- list(physeq = phy_ITS.R1_human_TNF.B.C_IL17.B.C.D)
@@ -633,7 +616,9 @@ for (i in seq_along(pseqs)) {
       colnames(d)[ncol(d)] <- "Taxa_rel_abundance" 
     }
     
-    ## TNF ##
+    ####################
+    
+    ## TNFi ##
     
     # subset dataset
     d.TNF <- d %>%
@@ -643,9 +628,9 @@ for (i in seq_along(pseqs)) {
     
     write.csv(d.TNF, file = paste(dir.taxa, "TNF.data.csv", sep = "/"))
     
-    ##########
+    ####################
     
-    ## IL17 loading ##
+    ## IL-17i loading ##
     
     # subset dataset
     d.IL17.load <- d %>%
@@ -655,9 +640,9 @@ for (i in seq_along(pseqs)) {
     
     write.csv(d.IL17.load, file = paste(dir.taxa, "IL17.load.data.csv", sep = "/"))
     
-    ##########
+    ####################
     
-    ## IL17 maintenance ##
+    ## IL-17i maintenance ##
     
     # subset dataset
     d.IL17.maint <- d %>%
@@ -668,9 +653,9 @@ for (i in seq_along(pseqs)) {
     
     write.csv(d.IL17.maint, file = paste(dir.taxa, "IL17.maint.data.csv", sep = "/"))
     
-    ##########
+    ####################
     
-    # calculate Wilcoxon between pre-post visits for each subset
+    # calculate wilcoxon between pre-post visits for each subset
     wilc.TNF <- wilcox.test(Taxa_rel_abundance ~ Timepoint_revised, data = d.TNF, paired = TRUE)
     wilc.IL17.load <- wilcox.test(Taxa_rel_abundance ~ Timepoint_revised, data = d.IL17.load, paired = TRUE)
     wilc.IL17.maint <- wilcox.test(Taxa_rel_abundance ~ Timepoint_revised, data = d.IL17.maint, paired = TRUE)
@@ -690,7 +675,7 @@ for (i in seq_along(pseqs)) {
 ############################################################################
 ############################################################################
 
-### Table of p-values of absolute delta relative abundance between TNFi and IL-17i ###
+### P-value table of magnitude relative abundance change between TNfi and IL-17i cohorts ###
 
 # list of phyloseq objects to process
 pseqs <- list(physeq = phy_ITS.R1_human_TNF.B.C_IL17.B.C.D)
@@ -764,7 +749,9 @@ for (i in seq_along(pseqs)) {
       colnames(d)[ncol(d)] <- "Taxa_rel_abundance" 
     }
     
-    ## TNF ##
+    ####################
+    
+    ## TNFi ##
     
     # subset dataset
     # spread data across timepoints
@@ -780,9 +767,9 @@ for (i in seq_along(pseqs)) {
     colnames(d.TNF)[colnames(d.TNF)=="B"] <- "1_pre"  
     colnames(d.TNF)[colnames(d.TNF)=="C"] <- "2_post"  
     
-    ##########
+    ####################
     
-    ## IL17 loading ##
+    ## IL-17i loading ##
     
     # subset dataset
     # spread data across timepoints
@@ -801,9 +788,9 @@ for (i in seq_along(pseqs)) {
     colnames(d.IL17.load)[colnames(d.IL17.load)=="B"] <- "1_pre"  
     colnames(d.IL17.load)[colnames(d.IL17.load)=="C"] <- "2_post"
     
-    ##########
+    ####################
     
-    ## IL17 maintenance ##
+    ## IL-17i maintenance ##
     
     # subset dataset
     # spread data across timepoints
@@ -823,16 +810,16 @@ for (i in seq_along(pseqs)) {
     colnames(d.IL17.maint)[colnames(d.IL17.maint)=="B"] <- "1_pre"  
     colnames(d.IL17.maint)[colnames(d.IL17.maint)=="D"] <- "2_post"
     
-    ##########
+    ####################
     
     # join subsets
     d.final <- rbind(d.TNF, d.IL17.load, d.IL17.maint)
     
-    # split IL17 into loading and maintenance subcategories
+    # split IL-17i into loading and maintenance subcategories
     d.load <- d.final[d.final$Treatment != "3_IL17.maint", ]
     d.maint <- d.final[d.final$Treatment != "2_IL17.load", ]
     
-    # Mann-Whitney
+    # mann-whitney
     mw.load <- wilcox.test(Delta_rel_abundance ~ Treatment, data = d.load, paired = FALSE)
     mw.maint <- wilcox.test(Delta_rel_abundance ~ Treatment, data = d.maint, paired = FALSE)
     
