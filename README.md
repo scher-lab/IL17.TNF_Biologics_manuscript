@@ -1,5 +1,3 @@
-.markdown-preview.markdown-preview { p, ul, ol {font-size: 0.8em;} }
-
 # IL17-TNF Biologics manuscript<br/>
 Code affiliated with the manuscript, "IL-17 Inhibition in Spondyloarthritis Associates with Subclinical Gut Microbiome Perturbations and a Distinctive IL-25-Driven Intestinal Inflammation," published in <i>Arthritis & Rheumatology</i>.<br/>
 
