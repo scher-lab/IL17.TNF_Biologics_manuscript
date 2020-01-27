@@ -6,9 +6,11 @@
 ############################################
 
 ### Brief description:
-### This script creates all of the necessary phyloseq objects that are used to generate manuscript figures from ITS data.
-### Imported files include:
-### 1) biom file - contains forward sequence data; generated with QIIME v.1.9.1; paired-end trimming of sequences was 
+### This script creates all of the necessary phyloseq objects that are used to generate manuscript figures/tables from ITS data.
+### Please see the corresponding code for specific figures/tables.
+
+### Imported files:
+### 1) biom file - contains forward sequence data; generated with QIIME v.1.9.1; paired-end trimming of sequences 
 ### performed with Cutadapt using the following adapters: forward - TAGAGGAAGTAAAAGTCGTAA...TTACGACTTTTACTTCCTCTA; 
 ### reverse - TTYRCTRCGTTCTTCATC...GATGAAGAACGYAGYRAA
 ### 2) mapping file - contains metadata
@@ -122,7 +124,7 @@ phy_ITS.R1_human_IL17.C_fR1 <- subset_samples(phy_ITS.R1_human_IL17_fR1, Timepoi
 phy_ITS.R1_human_IL17.D_fR1 <- subset_samples(phy_ITS.R1_human_IL17_fR1, Timepoint_revised == "D")
 
 # IL17 visits B and D do not have the same number of samples (some timepoints are missing from visit D)
-# create phyloseq objects from timepoints B and D that have identical subjects (i.e. no missing timepoints)
+# create matching phyloseq objects from timepoints B and D (i.e. no missing timepoints)
 IL17.D_subjects_fR1 <- as.vector(sample_data(phy_ITS.R1_human_IL17.D_fR1)$Subject)
 phy_ITS.R1_human_IL17.B.per.D_fR1 <- subset_samples(phy_ITS.R1_human_IL17.B_fR1, (sample_data(phy_ITS.R1_human_IL17.B_fR1)$Subject) %in% IL17.D_subjects_fR1)
 
@@ -150,7 +152,12 @@ phy_ITS.R1_human_TNF.B.C_IL17.B.C.D_fR1 <- merge_phyloseq(phy_ITS.R1_human_TNF.B
 # depth 1000 to match 16S data
 phy_ITS.R1_human_clean_fR1_even1000 <- rarefy_even_depth(phy_ITS.R1_human_clean_fR1, sample.size = 1000, rngseed = 711, replace = FALSE, trimOTUs = TRUE, verbose = TRUE)
 
-# subset rarefied phyloseq objects
+############################################################################
+############################################################################
+############################################################################
+
+### Subset rarefied phyloseq objects ###
+
 phy_ITS.R1_human_TNF_fR1_even1000 <- subset_samples(phy_ITS.R1_human_clean_fR1_even1000, Treatment == "1_TNF")
 phy_ITS.R1_human_IL17_fR1_even1000 <- subset_samples(phy_ITS.R1_human_clean_fR1_even1000, Treatment == "2_IL17")
 phy_ITS.R1_human_TNF.B_fR1_even1000 <- subset_samples(phy_ITS.R1_human_TNF_fR1_even1000, Timepoint_revised == "B")
@@ -174,7 +181,7 @@ phy_ITS.R1_human_TNF.B.C_IL17.B.C.D_fR1_even1000 <- merge_phyloseq(phy_ITS.R1_hu
 
 ### Statistics functions ###
 
-# All plot statistics: mean, std deviation, median, min value, max value, 10%ile, 25%ile, 75%ile, 90%ile
+# all plot statistics: mean, std deviation, median, min value, max value, 10%ile, 25%ile, 75%ile, 90%ile
 stats.all = function(x) {
   mean <- mean(x)
   stddev <- sd(x)
@@ -190,7 +197,7 @@ stats.all = function(x) {
            per10 = per10, per25 = per25, per75 = per75, per90 = per90))
 }
 
-# Boxplot statistics: median, 25%ile, 75%ile
+# boxplot statistics: median, 25%ile, 75%ile
 stats.boxplot <- function(x) {
   m <- median(x)
   per25 <- as.numeric(quantile(x, prob = c(0.25)))
@@ -198,7 +205,7 @@ stats.boxplot <- function(x) {
   return(c(y = m, ymin = per25, ymax = per75))
 }
 
-# Whiskers statistics: median, min value, max value
+# whiskers statistics: median, min value, max value
 stats.whiskers = function(x) {
   m <- median(x)
   per10 <- as.numeric(quantile(x, prob = c(0.10)))
@@ -213,7 +220,7 @@ stats.whiskers = function(x) {
 ### Reads ###
 
 # directory for storing files
-dir = ".../IL17.TNF/ITS/outputs/10_reads_MAN/"
+dir = ".../IL17.TNF/ITS/outputs/10_reads/"
 
 # background theme
 bkg <- theme_few() +
