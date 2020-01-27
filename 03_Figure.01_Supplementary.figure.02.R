@@ -180,6 +180,8 @@ for (i in seq_along(pseqs)) {
     fps = paste(dir.new, filename_plot.stats, sep = "")
     write.csv(s, file = fps)
     
+    ## General Statistics ##
+    
     # create file to save general statistics
     fs = paste(dir.new, filename_stats, sep = "")
     cat("Statistical Tests:\n\n", file = fs)
