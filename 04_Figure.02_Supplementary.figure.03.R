@@ -3,7 +3,6 @@
 ## Project: IL17.TNF Biologics manuscript                      ##
 ## Figure 02, Supplementary figure 03, Supplementary table 02  ##
 ## 16S data                                                    ##
-## Author: JM                                                  ##
 #################################################################
 
 ### Brief description:
