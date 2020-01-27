@@ -395,14 +395,12 @@ for (i in seq_along(pseqs)) {
     ftab = paste(dir.taxa, filename_table, sep = "")
     write.csv(d, file = ftab) 
     
-    # subset datasets
-    
     ############################
     
     ## TNFi ##
     
     # spread data across timepoints
-    # calculate absolute delta relative abundance
+    # calculate magnitude delta relative abundance
     d.TNF <- d %>%
       subset(select = c("Subject", "Treatment", "Timepoint_revised", "Taxa_rel_abundance")) %>%
       filter(Treatment == "1_TNF") %>% 
@@ -423,7 +421,7 @@ for (i in seq_along(pseqs)) {
     ## IL-17i loading ##
     
     # spread data across timepoints
-    # calculate absolute delta relative abundance
+    # calculate magnitude delta relative abundance
     d.IL17.load <- d %>%
       subset(select = c("Subject", "Treatment", "Timepoint_revised", "Taxa_rel_abundance")) %>%
       filter(Treatment == "2_IL17") %>% 
@@ -447,7 +445,7 @@ for (i in seq_along(pseqs)) {
     ## IL-17i maintenance ##
     
     # spread data across timepoints
-    # calculate absolute delta relative abundance
+    # calculate magnitude delta relative abundance
     d.IL17.maint <- d %>%
       subset(select = c("Subject", "Treatment", "Timepoint_revised", "Taxa_rel_abundance")) %>%
       filter(Treatment == "2_IL17") %>% 
@@ -476,7 +474,7 @@ for (i in seq_along(pseqs)) {
     ftab.plot = paste(dir.taxa, filename_table_for.plot, sep = "")
     write.csv(d.final, file = ftab.plot)
     
-    # plot TNFi vs IL-17i absolute delta relative abundance and save
+    # plot TNFi vs IL-17i magnitude delta relative abundance and save
     p <- ggplot(data = d.final, aes(x = Treatment, y = Delta_rel_abundance, color = Treatment, shape = Treatment)) +
       stat_summary(fun.data = stats.whiskers, geom = "errorbar", 
                    color = "black", size = 1, width = 0.3) +
@@ -494,7 +492,7 @@ for (i in seq_along(pseqs)) {
     plot(p)
     dev.off()
     
-    # obtain and save plot statistics
+    # obtain and plot statistics and save
     s <- aggregate(Delta_rel_abundance ~ Treatment, data = d.final, stats.all)
     s <- t(s)
     rownames(s) <- c("treatment", "mean", "sd", "median", "min", "max", 
@@ -616,6 +614,8 @@ for (i in seq_along(pseqs)) {
       colnames(d)[ncol(d)] <- "Taxa_rel_abundance" 
     }
     
+    ####################
+    
     ## TNFi ##
     
     # subset dataset
@@ -651,7 +651,7 @@ for (i in seq_along(pseqs)) {
     
     write.csv(d.IL17.maint, file = paste(dir.taxa, "IL17.maint.data.csv", sep = "/"))
     
-    ##########
+    ####################
     
     # calculate wilcoxon between pre-post visits for each subset
     wilc.TNF <- wilcox.test(Taxa_rel_abundance ~ Timepoint_revised, data = d.TNF, paired = TRUE)
