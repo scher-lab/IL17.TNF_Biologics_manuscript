@@ -661,7 +661,7 @@ for (i in seq_along(pseqs)) {
   # choose color palatte based on total number of taxa
   c <- sample(col, length(r.sorted$Order))
     
-  # create and save plot
+  # create plot and save
   p <- plot_bar(tm, x = "Sample", fill = "Order") + 
       scale_fill_manual(breaks = top.taxa, values = c) + # only display top taxa in legend
       scale_x_discrete(labels = c("TNFi\npre", "TNFi\nmaint", "IL-17i\npre", "IL-17i\nload", "IL-17i\nmaint")) +
