@@ -1,9 +1,11 @@
-################################################################ 
-## R script                                                   ##
-## Project: IL17.TNF Biologics manuscript                     ##
-## Figure 05, Supplementary figure 06, Supplementary table 04 ##
-## ITS data				                      ##
-################################################################
+############################################ 
+## R script                               ##
+## Project: IL17.TNF Biologics manuscript ##
+## Figure 05				  ##
+## Supplementary figure 06		  ##
+## Supplementary table 04 		  ##
+## ITS data				  ##
+############################################
 
 ### Brief description:
 
