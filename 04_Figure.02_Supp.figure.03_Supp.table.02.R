@@ -8,8 +8,8 @@
 ### Brief description:
 
 ### Figure 02, Supplementary figure 03:
-### Panels A and D: TNFi relative abundance lineplots
-### Panels B and E: IL-17i relative abundance lineplots
+### Panels A and D: TNFi relative abundance line plots
+### Panels B and E: IL-17i relative abundance line plots
 ### Panels C and F: Boxplots representing magnitude of relative abundance change in TNFi and IL-17i subsets
 
 ### Supplementary table 02:
