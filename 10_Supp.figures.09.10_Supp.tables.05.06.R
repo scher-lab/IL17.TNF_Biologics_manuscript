@@ -1,18 +1,16 @@
 ############################################ 
 ## R script                               ##
 ## Project: IL17.TNF_Biologics_manuscript ##
-## Supplementary Figures 09 and 10        ##
+## Supplementary figures 09,10            ##
+## Supplementary tables 05,06             ##
 ## Metagenomic data                       ##
-## Author: JM                             ##
 ############################################
 
 ### Brief description:
-### This script covers the code for Supplementary Figures 07 and 08 and Supplementary tables 05 and 06.
-
-### Supplementary Figure 09: TNFi violin plots
-### Supplementary Figure 10: IL-17i violin plots
-### Supplementary Table 05: TNFi statistics
-### Supplementary Table 06: IL-17i statistics
+### Supplementary figure 09: TNFi violin plots
+### Supplementary figure 10: IL-17i violin plots
+### Supplementary table 05: TNFi statistics
+### Supplementary table 06: IL-17i statistics
 
 ############################################################################
 ############################################################################
@@ -31,16 +29,16 @@ library(ggthemes)
 
 ### Metagenomic pathways ###
 
-# Analysis was performed using QIIME v1.9.1 using the group_significance.py command.
-# Comparisons were made pre vs post treatment in TNFi and IL-17i.
-# Only significant results were included in tables and plotted.
-# QIIME analysis provided Kruskal-Wallis results
-# Wilcoxon statistics calculated using R commands (see below)
-# Input files: 
-# Column 1: sampleID
-# Column 2: timepoint
-# Remainder of columns: reletive abundance of significant pathways for each sample
+### Analysis was performed with QIIME v1.9.1 using the group_significance.py command.
+### Comparisons were made pre vs post treatment in the TNFi and IL-17i cohorts.
+### Only significant results were included in tables and plotted.
+### QIIME analysis provided the Kruskal-Wallis results.
+### Wilcoxon statistics were calculated using R commands (see below)
 
+### Input files: 
+### Column 1: sampleID
+### Column 2: timepoint
+### Remainder of columns: reletive abundance across samples of significant pathways for each sample
 
 ## Setup ##
 
@@ -63,13 +61,13 @@ bkg <- theme_bw() +
 # directory
 dir = ".../IL17.TNF/Metagenomics/jobs/4_pathways_violoin.plots_R/"
 
-##########
+############################
 
-### TNF pathways ###
+### TNFi pathways ###
 
-## Statistics ##
-
-# includes all significant results from group_significance testing in QIIME, including outliers
+## Statistics
+# includes all significant results from from QIIME group_significance.py script
+# (i.e. outliers also included)
 
 # read in data table
 d.pathways <- read.table(file = paste(dir, "sig.pathways_TNF.B.C_all.txt", sep = ""),
@@ -93,9 +91,10 @@ for (i in 1:15) {
 ft = paste(dir, "pathways_TNF.B.C_wilcoxon.csv", sep = "")
 write.csv(file = ft, wilc.table)
 
-######################
+##########
 
-## Plot ## 
+## Plotting
+# excludes outliers
 
 # read in data table
 d.pathways <- read.table(file = paste(dir, "sig.pathways_TNF.B.C_figure.txt", sep = ""),
@@ -108,7 +107,7 @@ d.pathways <- as.data.frame(d.pathways)
 # melt data for graphing
 d <- melt(d.pathways, id.vars = "Pre_post_det")
 
-# plot
+# plot and save
 p <- ggplot(d, aes(x = Pre_post_det, y = value, fill = Pre_post_det)) +
   facet_wrap(~ variable, scales="free_x", ncol = 2,
              labeller = label_wrap_gen(width = 40)) +
@@ -121,19 +120,19 @@ p <- ggplot(d, aes(x = Pre_post_det, y = value, fill = Pre_post_det)) +
   xlab("") + ylab("\nPathway relative abundance") +
   bkg
 
-# save plot
 fp = paste(dir, "pathways_TNF.B.C_plot.pdf", sep = "")
 pdf(file = fp, width = 8, height = 10)
 plot(p)
 dev.off()
 
-##############
+############################
 
-### IL17 pathways ###
+### IL-17i pathways ###
 
-## Statistics ##
+## Statistics
+# includes all significant results from from QIIME group_significance.py script
+# (i.e. outliers also included)
 
-# includes all significant results from group_significance testing in QIIME, including outliers
 # read in data table
 d.pathways <- read.table(file = paste(dir, "sig.pathways_IL17.B.C.D_all.txt", sep = ""),
                          header = TRUE, row.names = 1, sep = "\t", check.names = FALSE,
@@ -142,7 +141,7 @@ d.pathways <- read.table(file = paste(dir, "sig.pathways_IL17.B.C.D_all.txt", se
 # convert to data frame
 d.pathways <- as.data.frame(d.pathways)
 
-#### pre-loading
+### pre-loading
 
 # subset pre/loading samples
 d.load <- d.pathways[d.pathways$Pre_post_det != "IL17.maint", ]
@@ -161,7 +160,7 @@ for (i in 1:8) {
 ft.load = paste(dir, "pathways_IL17.B.C.D_wilcoxon.loading.csv", sep = "")
 write.csv(file = ft.load, wilc.table.load)
 
-#### pre-maintenance
+### pre-maintenance
 
 # subset pre/maintenance samples
 d.maint <- d.pathways[d.pathways$Pre_post_det != "IL17.load", ]
@@ -181,9 +180,10 @@ for (i in 1:8) {
 ft.maint = paste(dir, "pathways_IL17.B.C.D_wilcoxon.maintenance.csv", sep = "")
 write.csv(file = ft.maint, wilc.table.maint)
 
-########################
+##########
 
-## Plot ##
+## Plotting
+# excludes outliers
 
 # read in data table
 d.pathways <- read.table(file = paste(dir, "sig.pathways_IL17.B.C.D_figure.txt", sep = ""),
@@ -196,7 +196,7 @@ d.pathways <- as.data.frame(d.pathways)
 # melt data for graphing
 d <- melt(d.pathways, id.vars = "Pre_post_det")
 
-# plot
+# plot and save
 p <- ggplot(d, aes(x = Pre_post_det, y = value, fill = Pre_post_det)) +
   facet_wrap(~ variable, scales="free_x", ncol = 2,
              labeller = label_wrap_gen(width = 40)) +
@@ -209,7 +209,6 @@ p <- ggplot(d, aes(x = Pre_post_det, y = value, fill = Pre_post_det)) +
   xlab("") + ylab("\nPathway relative abundance") +
   bkg
 
-# save plot
 fp = paste(dir, "pathways_IL17.B.C.D_plot.pdf", sep = "")
 pdf(file = fp, height = 6, width = 8)
 plot(p)
