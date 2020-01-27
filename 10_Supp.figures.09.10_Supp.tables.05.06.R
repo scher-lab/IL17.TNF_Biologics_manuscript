@@ -1,10 +1,10 @@
-############################################ 
-## R script                               ##
-## Project: IL17.TNF_Biologics_manuscript ##
-## Supplementary figures 09,10            ##
-## Supplementary tables 05,06             ##
-## Metagenomic data                       ##
-############################################
+############################################# 
+## R script                                ##
+## Project: IL17.TNF_Biologics_manuscript  ##
+## Supplementary figures 09, 10            ##
+## Supplementary tables 05, 06             ##
+## Metagenomic data                        ##
+#############################################
 
 ### Brief description:
 ### Supplementary figure 09: TNFi violin plots
